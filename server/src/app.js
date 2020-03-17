@@ -1,4 +1,3 @@
-const nodemon = require('nodemon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
