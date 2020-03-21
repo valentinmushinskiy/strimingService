@@ -1,4 +1,4 @@
-# client
+# youxdiplom
 
 ## Project setup
 ```
