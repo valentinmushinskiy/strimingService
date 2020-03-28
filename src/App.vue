@@ -1,18 +1,18 @@
 <template>
   <v-app>
-    <AppTeamplate/>
+    <MainLayout/>
   </v-app>
 </template>
 
 <script>
 
-import AppTeamplate from './components/AppTeamplate';
+import MainLayout from './layouts/MainLayout';
 
 export default {
   name: 'App',
 
   components: {
-    AppTeamplate,
+    MainLayout,
   }
 };
 </script>

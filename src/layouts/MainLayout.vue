@@ -10,7 +10,7 @@
         app
         overflow
         >
-            <v-list rounded>
+            <v-list>
 
             <v-list-item-group v-model="item" color="blue-grey">
             <v-list-item
@@ -27,7 +27,9 @@
                 </v-list-item>
             </v-list-item-group>
             </v-list>
-
+            <v-divider
+            class="mx-4"
+            ></v-divider>
 
 
         </v-navigation-drawer>
@@ -42,13 +44,18 @@
         />
         <v-toolbar-title>YOUX</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text>SIGN IN</v-btn>
+        <v-btn text to="signin" v-show="!checkUser" color="#212121">Вхід</v-btn>
           <v-divider
-            class="mx-4"
+            class="mx-5"
             inset
             vertical
+            v-show="!checkUser"
           ></v-divider>
-        <v-btn text :to=register>REGISTER</v-btn>
+        <v-btn text to="register" v-show="!checkUser" color="#212121">Реєстрація</v-btn>
+        
+
+        <span></span>
+        <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn>
         </v-app-bar>
         <v-content>
           <router-view></router-view>
@@ -72,13 +79,47 @@
         inset: true,
       },
       item: 1,
-      items: [
-        { text: 'Main', icon: 'mdi-home', route: '/'},
-        { text: 'Search', icon: 'mdi-magnify', route: '/search'},
-        { text: 'Library', icon: 'mdi-music-box-multiple', route: '/library'},
-        { text: 'Settings', icon: 'mdi-cogs', route: '/settings'},
-      ],
     }),
+    methods:{
+      logout(){
+        this.$store.dispatch('logoutUser')
+      }
+    },
+    // async mounted(){
+    //   if(!Object.keys(this.$store.getters.info).length){
+    //     await this.$store.dispatch('fetchInfo')
+    //   }
+    // },
+    computed: {
+      error(){
+        return this.$store.getters.error
+      },
+      checkUser(){
+        return this.$store.getters.checkUser
+      },
+      items(){
+        if(!this.checkUser){
+          return[
+             { text: 'Головна', icon: 'mdi-home', route: '/'},
+             { text: 'Пошук', icon: 'mdi-magnify', route: '/search'},
+            ]
+        }
+        else{
+          return [
+            { text: 'Головна', icon: 'mdi-home', route: '/'},
+            { text: 'Пошук', icon: 'mdi-magnify', route: '/search'},
+            { text: 'Моя медіатека', icon: 'mdi-music-box-multiple', route: '/library'},
+            { text: 'Налаштування', icon: 'mdi-cogs', route: '/settings'},
+          ]
+        }
+      }
+      
+    },
+    watch: {
+      error(fbError){
+        console.log(fbError)
+      }
+    }
   }
 
 
