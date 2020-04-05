@@ -52,7 +52,10 @@ const routes = [
   {
     path: '/add_track',
     name: 'AddTrack',
-    component: () => import('../views/AddTrack.vue')
+    component: () => import('../views/AddTrack.vue'),
+    // beforeEnter(to, from, next){
+    //   store.getters.checkUser ? next() : next('/signin')
+    // }
   }
 
 ]

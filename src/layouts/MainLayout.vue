@@ -54,8 +54,16 @@
         <v-btn text to="register" v-show="!checkUser" color="#212121">Реєстрація</v-btn>
         
 
-        <span></span>
-        <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn>
+        <v-btn v-show="checkUser" class="mr-5"
+        text>
+
+          <v-icon size="32" class="mr-1">mdi-account-circle</v-icon>
+          
+          {{name}}
+        
+        </v-btn>
+        
+        <!-- <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn> -->
         </v-app-bar>
         <v-content>
           <router-view></router-view>
@@ -80,17 +88,28 @@
       },
       item: 1,
     }),
+    
+    async mounted() {
+    if (!Object.keys(this.$store.getters.info).length) {
+        await this.$store.dispatch('fetchInfo')
+    }
+
+    this.loading = false
+    },
+
+
     methods:{
       logout(){
         this.$store.dispatch('logoutUser')
-      }
+      },
+      
     },
-    // async mounted(){
-    //   if(!Object.keys(this.$store.getters.info).length){
-    //     await this.$store.dispatch('fetchInfo')
-    //   }
-    // },
+    
+    
     computed: {
+      name() {
+        return this.$store.getters.info.name
+      },
       error(){
         return this.$store.getters.error
       },
