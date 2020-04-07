@@ -5,7 +5,6 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 
-
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
@@ -36,7 +35,11 @@ firebase.auth().onAuthStateChanged(user => {
       vuetify,
       store,
       render: function (h) { return h(App) },
-      
+      created(){
+        if (user) {
+          this.$store.dispatch('loggedUser', user)
+        }
+      }
     }).$mount('#app')
   }
 })

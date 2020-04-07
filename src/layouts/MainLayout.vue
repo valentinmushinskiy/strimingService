@@ -63,11 +63,21 @@
         
         </v-btn>
         
-        <!-- <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn> -->
+        <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn>
         </v-app-bar>
         <v-content>
           <router-view></router-view>
         </v-content>
+
+        <v-footer
+          :inset="footer.inset"
+          app
+          color="blue-grey"
+        >
+            <audio controls>
+              <source type="audio/mp3" >
+            </audio>
+        </v-footer>
     </v-app>
 </template>
 
@@ -81,7 +91,7 @@
         type: 'default (no property)',
         clipped: true,
         floating: false,
-        mini: false,
+        mini: true,
       },
       footer: {
         inset: true,

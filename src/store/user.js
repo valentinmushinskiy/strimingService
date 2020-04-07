@@ -2,24 +2,30 @@ import firebase from 'firebase/app'
 import User from './user_help'
 
 import 'firebase/storage';
-import { url } from 'vuelidate/lib/validators';
+// import { url } from 'vuelidate/lib/validators';
 
 export default{
     state: {
+        loadedTracks: [],
         user: null,
-        tracks: [],
-        createdTrackKey: ''
+        createdTrackKey: '',
     },
     mutations:{
+        setLoadedTracks (state, payload) {
+            state.loadedTracks = payload
+        },
         setUser(state, payload){
             state.user = payload
         },
         createTrack(state, payload) {
             state.tracks.push(payload)
         },
-        setCreatedMeetupKey (state, payload) {
+        setCreatedTrackKey (state, payload) {
             state.createdTrackKey = payload
-      }
+        },
+        clearTracks(state) {
+            state.loadedTracks = []
+        }
     },
     actions:{
         async registerUser ({commit}, {name, email, password}) {
@@ -55,17 +61,42 @@ export default{
             }
         },
 
+        loadTracks ({commit}) {
+            commit('setLoading', true)
+            console.log('here')
+            const user = firebase.auth().currentUser
+            firebase.database().ref(`users/${user.uid}/tracks`).once('value')
+              .then((data) => {
+                const tracks = []
+                const obj = data.val()
+                for (let key in obj) {
+                  tracks.push({
+                    id: key,
+                    trackName: obj[key].trackName,
+                    trackUrl: obj[key].trackUrl,
+                  })
+                }
+                commit('setLoadedTracks', tracks)
+                commit('setLoading', false)
+              })
+              .catch(
+                (error) => {
+                  console.log(error)
+                  commit('setLoading', false)
+                }
+              )
+        },
+
         uploadTrack({commit}, payload){
-            // const user = firebase.auth().currentUser
             const track = {
                 trackName: payload.trackName
-                //date: payload.date.toISOString(),
-                // creatorId: user.user.uid
             }
             console.log(track)
             let trackUrl
             let key
-            firebase.database().ref('tracks').push(track)
+            const user = firebase.auth().currentUser
+            
+            firebase.database().ref(`users/${user.uid}/tracks`).push(track)
                 .then((data) => {
                     key = data.key
                     return key
@@ -81,7 +112,7 @@ export default{
                 .then(URL => {
                     trackUrl = URL
                     console.log(trackUrl)
-                    return firebase.database().ref('tracks').child(key).update({trackUrl: trackUrl})
+                    return firebase.database().ref(`users/${user.uid}/tracks`).child(key).update({trackUrl: trackUrl})
                 })
                 .then(() => {
                     commit('createTrack', {
@@ -99,14 +130,19 @@ export default{
             console.log(payload.uid)
             commit('setUser', new User(payload.uid))
         },
+
         logoutUser({commit}){
             firebase.auth().signOut()
             commit('setUser', null)
             commit('clearInfo')
+            commit('clearTracks')
         },
         
     },
     getters:{
+        loadedTracks (state) {
+            return state.loadedTracks
+        },
         user(state){
             return state.user
         },
