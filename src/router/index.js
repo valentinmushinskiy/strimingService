@@ -23,7 +23,7 @@ const routes = [
     name: 'Library',
     component: () => import('../views/Library.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
+      store.getters.checkUser ? next() : next('/')
     }
   },
   {
@@ -31,18 +31,19 @@ const routes = [
     name: 'Settings',
     component: () => import('../views/Settings.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
+      store.getters.checkUser ? next() : next('/')
     }
   },
   {
     path: '/signin',
     name: 'SignIn',
-    component: () => import('../views/SignIn.vue')
+    component: () => import('../views/SignIn.vue'),
+    
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/Register.vue'),
   },
   {
     path: '/termsOfUse',
@@ -54,7 +55,7 @@ const routes = [
     name: 'AddTrack',
     component: () => import('../views/AddTrack.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
+      store.getters.checkUser ? next() : next('/')
     }
   }
 

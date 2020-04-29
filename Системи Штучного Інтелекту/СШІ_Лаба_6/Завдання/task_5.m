@@ -1,0 +1,11 @@
+FitnessFunction = @shufcn;
+numberOfVariables = 2;
+
+opts = optimoptions(@ga,'SelectionFcn',@selectiontournament, ...
+                        'FitnessScalingFcn',@fitscalingprop);
+[x,Fval,exitFlag,Output] = ga(FitnessFunction,numberOfVariables,[],[],[], ...
+    [],[],[],[],opts);
+
+fprintf('The number of generations was : %d\n', Output.generations);
+fprintf('The number of function evaluations was : %d\n', Output.funccount);
+fprintf('The best function value found was : %g\n', Fval);

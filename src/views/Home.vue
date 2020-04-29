@@ -31,10 +31,6 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
-    
-    <audio controls>
-      <source type="audio/mp3" >
-    </audio>
   </v-card>
 </template>
 
@@ -47,7 +43,7 @@ export default {
         items: [
           { tab: 'Популярні плейлисти', content: 'popular' },
           { tab: 'Новинки сайту', content: 'new' },
-          { tab: 'Топ місяця', content: '' },
+          { tab: 'Топ місяця', content: 'top' },
         ],
       }
     },

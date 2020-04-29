@@ -15,11 +15,12 @@
     <v-form @submit.prevent="onUploadTrack">
     <v-text-field
         v-model="trackName"
-        label="Імя"
+        label="Імя Треку"
         required
         class="my-4"
         style="width: 50%"
     ></v-text-field>
+
     <small
       class="error"
       v-if="$v.trackName.$dirty && !$v.trackName.required"
@@ -27,6 +28,18 @@
     Поле обовязкове
     </small>
 
+    <v-text-field
+        v-model="artist"
+        label="Виконавець"
+        required
+        style="width: 50%"
+    ></v-text-field>
+    <small
+      class="error"
+      v-if="$v.artist.$dirty && !$v.artist.required"
+    >
+    Поле обовязкове
+    </small>
 
     <v-row class="align-center">
       <v-col cols="4" md="4">
@@ -49,7 +62,7 @@
       <v-col cols="8" md="8">
         <span class="mt-2 subtitle-2">{{fileName}}</span>
       </v-col>
-      <button type="submit">Загрузить</button>
+      <button type="submit">Загрузити</button>
       </v-row>
     </v-form>
   </v-card>
@@ -61,38 +74,25 @@ import {required} from 'vuelidate/lib/validators'
 
 export default {
     data: () => ({
+      artist: '',
       trackName: '',
       fileName: '',
       fileUrl: '',
-      date: new Date(),
-      time: new Date(),
       file: null,
       rules: [
         value => !value || value.size < 20000000 || 'файл повинен мати розмір менше 20 мб',
       ],
     }),
+
     validations: {
       trackName: {
         required
+      },
+      artist: {
+        required
       }
     },
-    computed: {
-      submittableDateTime(){
-        const date = new Date(this.date)
 
-        if(typeof this.time === 'string'){
-          let hours = this.time.match(/^(\d+)/)[1]
-          let minutes = this.time.match(/:(\d+)/)[1]
-          date.setHours(hours)
-          date.setMinutes(minutes)
-        }else{
-          date.setHours(this.time.getHours())
-          date.setMinutes(this.time.getMinutes())
-        }
-
-        return date
-      }
-    },
     methods: {
       onUploadTrack(){
         if(this.$v.$invalid){
@@ -105,10 +105,10 @@ export default {
         console.log(this.trackName)
 
         const track = {
+          artist: this.artist,
           trackName: this.trackName,
           file: this.file,
           fileUrl: this.fileUrl
-          // date: this.submittableDateTime
         }
 
         this.$store.dispatch('uploadTrack', track)

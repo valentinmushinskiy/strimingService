@@ -1,0 +1,1 @@
+gensurf(readfis('tipper'))

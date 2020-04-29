@@ -9,10 +9,11 @@
         :temporary="primaryDrawer.type === 'temporary'"
         app
         overflow
+        
         >
             <v-list>
 
-            <v-list-item-group v-model="item" color="blue-grey">
+            <v-list-item-group v-model="item" color="grey darken-3">
             <v-list-item
                 v-for="(item, i) in items"
                 :key="i"
@@ -36,54 +37,84 @@
         <v-app-bar
         :clipped-left="primaryDrawer.clipped"
         app
-        color="blue-grey"
+        class="grey darken-3"
+        dark
         >
         <v-app-bar-nav-icon
             v-if="primaryDrawer.type !== 'permanent'"
             @click.stop="primaryDrawer.model = !primaryDrawer.model"
         />
-        <v-toolbar-title>YOUX</v-toolbar-title>
+
+
+
+        <v-toolbar-title class="mr-8" color="">YOUX</v-toolbar-title>
+
+        
+        
+        <!-- <audio controls 
+        v-show="checkUser"
+        >
+          <source type="audio/mp3" >
+        </audio> -->
         <v-spacer></v-spacer>
-        <v-btn text to="signin" v-show="!checkUser" color="#212121">Вхід</v-btn>
+
+        
+
+
+
+
+
+        <v-btn text to="signin" v-show="!checkUser" color="blue-grey lighten-4">Вхід</v-btn>
           <v-divider
             class="mx-5"
             inset
             vertical
             v-show="!checkUser"
+            color="blue-grey lighten-4"
           ></v-divider>
-        <v-btn text to="register" v-show="!checkUser" color="#212121">Реєстрація</v-btn>
+        <v-btn text to="register" v-show="!checkUser" color="blue-grey lighten-4">Реєстрація</v-btn>
         
 
-        <v-btn v-show="checkUser" class="mr-5"
+        <v-btn v-show="checkUser"
         text>
 
-          <v-icon size="32" class="mr-1">mdi-account-circle</v-icon>
+          <v-icon size="32" class="mr-1" dark>mdi-account-circle</v-icon>
           
           {{name}}
         
         </v-btn>
-        
-        <v-btn outlined @click="logout" v-show="checkUser" color="#212121" class="mr-5">Вийти</v-btn>
+        <v-divider
+            class="mx-5"
+            inset
+            vertical
+            v-show="checkUser"
+          ></v-divider>
+        <v-btn outlined @click="logout" v-show="checkUser" class="mr-5">Вийти</v-btn>
         </v-app-bar>
         <v-content>
           <router-view></router-view>
         </v-content>
-
         <v-footer
+          color="transparent"
           :inset="footer.inset"
           app
-          color="blue-grey"
+          class="d-flex justify-center"
         >
-            <audio controls>
-              <source type="audio/mp3" >
-            </audio>
+          <Player/>
         </v-footer>
     </v-app>
 </template>
 
 
 <script>
+  import Player from '@/components/player'
+
   export default {
+
+    components: {
+      Player
+    },
+
     data: () => ({
       drawers: ['Default (no property)', 'Permanent', 'Temporary'],
       primaryDrawer: {
@@ -91,13 +122,15 @@
         type: 'default (no property)',
         clipped: true,
         floating: false,
-        mini: true,
+        mini: false,
+        
       },
       footer: {
         inset: true,
       },
       item: 1,
     }),
+    
     
     async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
@@ -107,11 +140,12 @@
     this.loading = false
     },
 
-
     methods:{
       logout(){
         this.$store.dispatch('logoutUser')
+        this.$router.push('/signin')
       },
+      
       
     },
     
@@ -125,7 +159,8 @@
       },
       checkUser(){
         return this.$store.getters.checkUser
-      },
+      },  
+  
       items(){
         if(!this.checkUser){
           return[
@@ -154,3 +189,8 @@
 
 </script>
 
+<style scoped>
+  .v-input__slot{
+    margin-bottom: 0px !important;
+  }
+</style>

@@ -1,0 +1,1 @@
+plotobjective(@shufcn,[-2 2; -2 2]);

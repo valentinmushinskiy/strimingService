@@ -9,6 +9,7 @@ export default{
         loadedTracks: [],
         user: null,
         createdTrackKey: '',
+        tracks: []
     },
     mutations:{
         setLoadedTracks (state, payload) {
@@ -74,6 +75,7 @@ export default{
                     id: key,
                     trackName: obj[key].trackName,
                     trackUrl: obj[key].trackUrl,
+                    artist: obj[key].artist
                   })
                 }
                 commit('setLoadedTracks', tracks)
@@ -89,12 +91,14 @@ export default{
 
         uploadTrack({commit}, payload){
             const track = {
+                artist: payload.artist,
                 trackName: payload.trackName
             }
             console.log(track)
             let trackUrl
             let key
             const user = firebase.auth().currentUser
+            
             
             firebase.database().ref(`users/${user.uid}/tracks`).push(track)
                 .then((data) => {
