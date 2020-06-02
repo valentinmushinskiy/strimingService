@@ -89,19 +89,19 @@
             vertical
             v-show="checkUser"
           ></v-divider>
-        <v-btn outlined @click="logout" v-show="checkUser" class="mr-5">Вийти</v-btn>
+        <v-btn outlined @click="logout" v-show="checkUser" class="mr-5">Вихід</v-btn>
         </v-app-bar>
         <v-content>
           <router-view></router-view>
         </v-content>
-        <v-footer
+        <!-- <v-footer
           color="transparent"
           :inset="footer.inset"
           app
           class="d-flex justify-center"
         >
           <Player/>
-        </v-footer>
+        </v-footer> -->
     </v-app>
 </template>
 
@@ -145,8 +145,6 @@
         this.$store.dispatch('logoutUser')
         this.$router.push('/signin')
       },
-      
-      
     },
     
     

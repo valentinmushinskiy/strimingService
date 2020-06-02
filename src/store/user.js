@@ -9,7 +9,8 @@ export default{
         loadedTracks: [],
         user: null,
         createdTrackKey: '',
-        tracks: []
+        tracks: [],
+        playlist: []
     },
     mutations:{
         setLoadedTracks (state, payload) {
@@ -20,6 +21,9 @@ export default{
         },
         createTrack(state, payload) {
             state.tracks.push(payload)
+        },
+        createPlaylist(state, payload){
+            state.playlist.push(payload)
         },
         setCreatedTrackKey (state, payload) {
             state.createdTrackKey = payload
@@ -64,9 +68,8 @@ export default{
 
         loadTracks ({commit}) {
             commit('setLoading', true)
-            console.log('here')
             const user = firebase.auth().currentUser
-            firebase.database().ref(`users/${user.uid}/tracks`).once('value')
+            firebase.database().ref(`tracks`).once('value')
               .then((data) => {
                 const tracks = []
                 const obj = data.val()
@@ -75,7 +78,8 @@ export default{
                     id: key,
                     trackName: obj[key].trackName,
                     trackUrl: obj[key].trackUrl,
-                    artist: obj[key].artist
+                    artist: obj[key].artist,
+                    userId: obj[key].userId
                   })
                 }
                 commit('setLoadedTracks', tracks)
@@ -89,18 +93,23 @@ export default{
               )
         },
 
+
+
         uploadTrack({commit}, payload){
+            const user = firebase.auth().currentUser
+
             const track = {
                 artist: payload.artist,
-                trackName: payload.trackName
+                trackName: payload.trackName,
+                userId: user.uid
             }
+
             console.log(track)
             let trackUrl
             let key
-            const user = firebase.auth().currentUser
             
-            
-            firebase.database().ref(`users/${user.uid}/tracks`).push(track)
+
+            firebase.database().ref(`tracks`).push(track)
                 .then((data) => {
                     key = data.key
                     return key
@@ -116,7 +125,7 @@ export default{
                 .then(URL => {
                     trackUrl = URL
                     console.log(trackUrl)
-                    return firebase.database().ref(`users/${user.uid}/tracks`).child(key).update({trackUrl: trackUrl})
+                    return firebase.database().ref(`tracks`).child(key).update({trackUrl: trackUrl})
                 })
                 .then(() => {
                     commit('createTrack', {
@@ -128,6 +137,20 @@ export default{
                 .catch(error => {
                     console.log(error);
                 })
+        },
+
+        uploadPlaylist({commit}, {name, imageUrl, description, tracksToPlaylist}){
+            
+            const sendPlaylist = {
+                name: name,
+                description: description,
+                imageUrl: imageUrl,
+                tracksToPlaylist: tracksToPlaylist
+            }
+            commit('createPlaylist', sendPlaylist)
+            console.log(sendPlaylist)
+
+            firebase.database().ref(`playlists`).push(sendPlaylist)
         },
 
         loggedUser({commit}, payload){
@@ -144,12 +167,22 @@ export default{
         
     },
     getters:{
-        loadedTracks (state) {
+        loadedAllTracks (state) {
             return state.loadedTracks
         },
+
+        loadedTracks (state) {
+            const user = firebase.auth().currentUser
+            console.log(user.uid)
+            return state.loadedTracks.filter(loadedTrack => {
+                return loadedTrack.userId === user.uid
+            })
+        },
+
         user(state){
             return state.user
         },
+
         checkUser(state){
             return state.user !== null
         },

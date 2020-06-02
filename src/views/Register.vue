@@ -108,6 +108,7 @@
 </template>
 
 <script>
+
 import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'
 
 

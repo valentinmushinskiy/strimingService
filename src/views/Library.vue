@@ -81,45 +81,6 @@ export default {
     tracks () {
       return this.$store.getters.loadedTracks
     },
-    color(){
-      function getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
-      }
-
-      let rnd = getRandomInt(10);
-      switch(rnd){
-        case 0: 
-          return 'primary';
-          break;
-        case 1: 
-          return 'pink';
-          break;
-        case 2: 
-          return 'indigo';
-          break;
-        case 3: 
-          return 'teal';
-          break;
-        case 4: 
-          return 'cyan'
-          break;
-        case 5: 
-          return 'purple';
-          break;
-        case 6: 
-          return 'warning';
-          break;
-        case 7: 
-          return 'success';
-          break;
-        case 8: 
-          return 'error';
-          break;
-        case 9: 
-          return 'deep-orange';
-          break;
-      }
-    }
   }
 };
 

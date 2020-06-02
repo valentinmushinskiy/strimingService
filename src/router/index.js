@@ -57,7 +57,16 @@ const routes = [
     beforeEnter(to, from, next){
       store.getters.checkUser ? next() : next('/')
     }
+  },
+  {
+    path: '/create_playlist',
+    name: 'CreatePlaylist',
+    component: () => import('../views/CreatePlaylist.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/')
+    }
   }
+
 
 ]
 

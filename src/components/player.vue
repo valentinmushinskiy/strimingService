@@ -13,7 +13,7 @@
           <v-icon size="24" color="blue-grey lighten-4">mdi-skip-previous-circle</v-icon>
           </v-btn>
           <v-btn icon>
-          <v-icon size="44" color="blue-grey lighten-4" @click="play">
+          <v-icon size="44" color="blue-grey lighten-4">
               {{ isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle' }}
           </v-icon>
           </v-btn>
