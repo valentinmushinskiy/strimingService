@@ -94,14 +94,14 @@
         <v-content>
           <router-view></router-view>
         </v-content>
-        <!-- <v-footer
-          color="transparent"
-          :inset="footer.inset"
+        <v-footer
+          color="grey darken-3"
+          height="80px"
+          class="d-flex justify-center pt-3"
           app
-          class="d-flex justify-center"
         >
           <Player/>
-        </v-footer> -->
+        </v-footer>
     </v-app>
 </template>
 

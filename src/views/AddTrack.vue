@@ -12,25 +12,6 @@
     ></v-divider>
 
     <div class="d-flex">
-        <div class="d-flex image mr-5" style="position: relative; width: 30%;">
-        <img :src="imageUrl" alt="preview" width="100%" height="auto">
-
-        <v-btn
-            class="btn subtitle-2"
-            outlined
-            @click="onPickFoto"
-            >
-            Виберіть картинку
-        </v-btn>
-
-        <input type="file"
-            accept="image/*"
-            style="display: none"
-            ref="imageInput"
-            @change="onFotoPicked"
-        >
-        </div>
-    
         <v-text-field
             v-model="trackName"
             label="Імя Треку"

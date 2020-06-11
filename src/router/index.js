@@ -11,19 +11,25 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/signin')
+    }
   },
   {
     path: '/search',
     name: 'Search',
-    component: () => import('../views/Search.vue')
+    component: () => import('../views/Search.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/signin')
+    }
   },
   {
     path: '/library',
     name: 'Library',
     component: () => import('../views/Library.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/')
+      store.getters.checkUser ? next() : next('/signin')
     }
   },
   {
@@ -31,7 +37,7 @@ const routes = [
     name: 'Settings',
     component: () => import('../views/Settings.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/')
+      store.getters.checkUser ? next() : next('/signin')
     }
   },
   {
@@ -55,7 +61,7 @@ const routes = [
     name: 'AddTrack',
     component: () => import('../views/AddTrack.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/')
+      store.getters.checkUser ? next() : next('/signin')
     }
   },
   {
@@ -63,7 +69,15 @@ const routes = [
     name: 'CreatePlaylist',
     component: () => import('../views/CreatePlaylist.vue'),
     beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/')
+      store.getters.checkUser ? next() : next('/signin')
+    }
+  },
+  {
+    path: '/playlist/:id',
+    name: 'Playlist',
+    component: () => import('../views/Playlist.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/signin')
     }
   }
 

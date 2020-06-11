@@ -196,7 +196,13 @@ export default{
         loadedPlaylists(state){
             return state.loadedPlaylists
         },
-
+        playlist(state){
+            return (id) => {
+                return state.loadedPlaylists.find((playlist) => {
+                    return playlist.id === id
+                })
+            }
+        },
         loadedAllTracks (state) {
             return state.loadedTracks
         },

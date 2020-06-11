@@ -1,17 +1,19 @@
 <template>
   <v-card
-  height="88vh"
+  
   width="1000"
   class="mx-auto mt-5 px-8 pt-1">
     <h2 class="title mb-1">Головна</h2>
     <v-divider
     ></v-divider>
    <v-btn v-show="isAdmin" 
+   class="mt-3"
    to="/create_playlist" 
    >Створити плейлист</v-btn>
-   <div class="d-flex justify-start py-5">
+   <div class="d-flex justify-start flex-wrap">
      <v-card
-      max-width="250"
+      max-width="226"
+      class="mx-1 my-4"
       v-for="playlist in playlists" :key="playlist.id"
     >
       <v-list-item>
@@ -22,7 +24,7 @@
 
       <v-img
         :src="playlist.imageUrl"
-        height="194"
+        height="200"
       ></v-img>
 
       <v-card-text>
@@ -33,8 +35,9 @@
         <v-btn
           text
           color="deep-purple accent-4"
+          :to="`/playlist/${playlist.id}`"
         >
-          Listen
+          <span>Детальніше</span>
         </v-btn>
         
         <v-spacer></v-spacer>

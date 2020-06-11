@@ -1,5 +1,6 @@
 <template>
   <v-card
+  style="min-height:72vh"
   width="1000"
   class="mx-auto mt-5 px-8 pt-1">
     <h2 class="title mb-1">Моя медіатека</h2>
