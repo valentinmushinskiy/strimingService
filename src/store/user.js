@@ -180,6 +180,19 @@ export default{
             firebase.database().ref(`playlists`).push(sendPlaylist)
         },
 
+        async deletePlaylist({commit}, payload){
+            commit('clearError')
+            commit('setLoading', true)
+            try {
+              await firebase.database().ref('playlists').child(payload).remove()
+              commit('setLoading', false)
+            } catch (error) {
+              commit('setLoading', false)
+              commit('setError', error.message)
+              throw error
+            }
+        },
+
         loggedUser({commit}, payload){
             commit('setUser', new User(payload.uid))
         },

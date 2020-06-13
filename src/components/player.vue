@@ -7,7 +7,9 @@
           <v-btn icon small>
           <v-icon size="24" @click="prevTrack" color="blue-grey lighten-4">mdi-skip-previous-circle</v-icon>
           </v-btn>
-          <v-btn icon @click="play">
+          <v-btn icon 
+          @click="play"
+          >
             <v-icon size="44" color="blue-grey lighten-4">
               {{ isTimerPlaying ? 'mdi-pause-circle' : 'mdi-play-circle' }}
             </v-icon>
@@ -30,7 +32,7 @@
       <span class="d-flex justify-space-between">
         <span class="d-flex justify-center subtitle-1" style="color: #fff">
 
-        <span class="subtitle-2" >{{currentTrack.name}}</span>
+        <span class="subtitle-2" >{{currentTrack.trackName}}</span>
         <pre class="caption" style="margin-top: 1px"> - {{currentTrack.artist}}</pre>  
         </span>
         <span class="body-2"
@@ -76,92 +78,73 @@ export default {
       currentTrack: null,
       currentTrackIndex: 0,
       transitionName: null,
-      tracks: [
-        {
-          name: "Mekanın Sahibi",
-          artist: "Norm Ender",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/1.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
-          url: "https://www.youtube.com/watch?v=z3wAjJXbYzA",
-          favorited: false
-        },
-        {
-          name: "Everybody Knows",
-          artist: "Leonard Cohen",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/2.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/2.mp3",
-          url: "https://www.youtube.com/watch?v=Lin-a2lTelg",
-          favorited: true
-        },
-        {
-          name: "Extreme Ways",
-          artist: "Moby",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/3.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/3.mp3",
-          url: "https://www.youtube.com/watch?v=ICjyAe9S54c",
-          favorited: false
-        },
-        {
-          name: "Butterflies",
-          artist: "Sia",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/4.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/4.mp3",
-          url: "https://www.youtube.com/watch?v=kYgGwWYOd9Y",
-          favorited: false
-        },
-        {
-          name: "The Final Victory",
-          artist: "Haggard",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/5.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/5.mp3",
-          url: "https://www.youtube.com/watch?v=0WlpALnQdN8",
-          favorited: true
-        },
-        {
-          name: "Genius ft. Sia, Diplo, Labrinth",
-          artist: "LSD",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/6.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/6.mp3",
-          url: "https://www.youtube.com/watch?v=HhoATZ1Imtw",
-          favorited: false
-        },
-        {
-          name: "The Comeback Kid",
-          artist: "Lindi Ortega",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/7.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/7.mp3",
-          url: "https://www.youtube.com/watch?v=me6aoX0wCV8",
-          favorited: true
-        },
-        {
-          name: "Overdose",
-          artist: "Grandson",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/8.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/8.mp3",
-          url: "https://www.youtube.com/watch?v=00-Rl3Jlx-o",
-          favorited: false
-        },
-        {
-          name: "Rag'n'Bone Man",
-          artist: "Human",
-          cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/9.jpg",
-          source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/9.mp3",
-          url: "https://www.youtube.com/watch?v=L3wKzyIN1yk",
-          favorited: false
-        }
-      ],
+      tracks: []
+      // tracks: [
+      //   {
+      //     name: "Mekanın Sahibi",
+      //     artist: "Norm Ender",
+      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/1.jpg",
+      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
+      //     url: "https://www.youtube.com/watch?v=z3wAjJXbYzA",
+      //     favorited: false
+      //   },
+      //   {
+      //     name: "Everybody Knows",
+      //     artist: "Leonard Cohen",
+      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/2.jpg",
+      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/2.mp3",
+      //     url: "https://www.youtube.com/watch?v=Lin-a2lTelg",
+      //     favorited: true
+      //   },
+      //   {
+      //     name: "Extreme Ways",
+      //     artist: "Moby",
+      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/3.jpg",
+      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/3.mp3",
+      //     url: "https://www.youtube.com/watch?v=ICjyAe9S54c",
+      //     favorited: false
+      //   },
+
+      // ],
     };
   },
 
-  // computed: {
+  // computed:{
   //   tracks(){
-  //     let tracks = JSON.parse(JSON.stringify(this.$store.getters.playTrack))
-  //     console.log(tracks)
-  //     return tracks
+  //     if(this.$store.getters.hasSong){
+  //       let tracks = this.$store.getters.playPlaylist
+  //       return tracks
+  //     }
+  //   },
+  //   trackId(){
+  //     if(this.$store.getters.hasSong){
+  //       let trackId = this.$store.getters.playTrack
+  //       return trackId
+  //     }
   //   },
   // },
 
   methods: {
+    tracksToPlay(){
+      if(this.$store.getters.hasSong){
+        let playlistTracks = this.$store.getters.playPlaylist
+        this.tracks = playlistTracks
+        console.log(this.tracks)
+      }
+    },
+
+    trackId(){
+      if(this.$store.getters.hasSong){
+        let trackId = this.$store.getters.playTrack
+        this.currentTrack = this.tracks.find(track => track.id === trackId)
+        console.log(this.currentTrack)
+      }
+    },
+
+    // current(){
+    //   console.log(tracks.find(track => track.id === trackId))
+    // },
+
     play() {
       if (this.audio.paused) {
         this.audio.play();
@@ -199,7 +182,7 @@ export default {
     updateBar(x) {
       let progress = this.$refs.progress;
       let maxduration = this.audio.duration;
-      let position = x - 655 - progress.offsetLeft;
+      let position = x - 525 - progress.offsetLeft;
       console.log(position)
       let percentage = (100 * position) / progress.offsetWidth;
       if (percentage > 100) {
@@ -248,7 +231,7 @@ export default {
       this.barWidth = 0;
       this.circleLeft = 0;
       this.audio.currentTime = 0;
-      this.audio.src = this.currentTrack.source;
+      this.audio.src = this.currentTrack.trackUrl;
       setTimeout(() => {
         if(this.isTimerPlaying) {
           this.audio.play();
@@ -260,36 +243,25 @@ export default {
   },
 
   created() {
-    let vm = this;
-    this.currentTrack = this.tracks[0];
-    this.audio = new Audio();
-    this.audio.src = this.currentTrack.source;
-    this.audio.ontimeupdate = function() {
-      vm.generateTime();
-    };
-    this.audio.onloadedmetadata = function() {
-      vm.generateTime();
-    };
-    this.audio.onended = function() {
-      vm.nextTrack();
-      this.isTimerPlaying = true;
-    };
+    if(this.$store.getters.hasSong){
+      let vm = this;
+      vm.tracksToPlay()
+      vm.trackId()
+      // this.currentTrack = tracks.find(track => track.id === trackId);
+      this.audio = new Audio();
+      this.audio.src = this.currentTrack.trackUrl;
+      this.audio.ontimeupdate = function() {
+        vm.generateTime();
+      };
+      this.audio.onloadedmetadata = function() {
+        vm.generateTime();
+      };
+      this.audio.onended = function() {
+        vm.nextTrack();
+        this.isTimerPlaying = true;
+      };
+    }
   }
-
-
-
-  // player(){
-  //   if(!this.isPlaying){
-  //     playtrack = new Audio(this.$store.getters.playTrack.url)
-      
-  //     this.isPlaying = true
-  //     playtrack.play()
-  //   }else{
-  //     this.isPlaying = false
-  //     console.log(1)
-  //     playtrack.pause()
-  //   }
-  // },
 }
 </script>
 

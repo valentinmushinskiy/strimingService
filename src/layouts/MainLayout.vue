@@ -44,26 +44,8 @@
             v-if="primaryDrawer.type !== 'permanent'"
             @click.stop="primaryDrawer.model = !primaryDrawer.model"
         />
-
-
-
         <v-toolbar-title class="mr-8" color="">YOUX</v-toolbar-title>
-
-        
-        
-        <!-- <audio controls 
-        v-show="checkUser"
-        >
-          <source type="audio/mp3" >
-        </audio> -->
         <v-spacer></v-spacer>
-
-        
-
-
-
-
-
         <v-btn text to="signin" v-show="!checkUser" color="blue-grey lighten-4">Вхід</v-btn>
           <v-divider
             class="mx-5"
@@ -84,8 +66,7 @@
         
         </v-btn>
         <v-divider
-            class="mx-5"
-            inset
+            class="mx-5 white"
             vertical
             v-show="checkUser"
           ></v-divider>
@@ -99,6 +80,7 @@
           height="80px"
           class="d-flex justify-center pt-3"
           app
+          v-if="hasSong"
         >
           <Player/>
         </v-footer>
@@ -149,7 +131,10 @@
     
     
     computed: {
-      name() {
+      hasSong() {
+        return this.$store.getters.hasSong;
+      },
+      name(){
         return this.$store.getters.info.name
       },
       error(){
@@ -162,16 +147,13 @@
       items(){
         if(!this.checkUser){
           return[
-             { text: 'Головна', icon: 'mdi-home', route: '/'},
-             { text: 'Пошук', icon: 'mdi-magnify', route: '/search'},
             ]
         }
         else{
           return [
             { text: 'Головна', icon: 'mdi-home', route: '/'},
             { text: 'Пошук', icon: 'mdi-magnify', route: '/search'},
-            { text: 'Моя медіатека', icon: 'mdi-music-box-multiple', route: '/library'},
-            { text: 'Налаштування', icon: 'mdi-cogs', route: '/settings'},
+            { text: 'Моя медіатека', icon: 'mdi-music-box-multiple', route: '/library'}
           ]
         }
       }

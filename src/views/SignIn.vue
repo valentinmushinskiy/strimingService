@@ -53,14 +53,14 @@
     </small>
 
     <v-btn
-      color="success"
+    outlined
       class="mr-4 mb-4"
       type="submit"
     >
       Ввійти
     </v-btn>
     <p class="error">{{submitStatus}}</p>
-    <p class="text-center pb-5">Немає акауну? <router-link to="/register">Зареєструватись</router-link> </p>
+    <p class="text-center pb-5" outlined>Немає акауну? <router-link to="/register">Зареєструватись</router-link> </p>
   </v-form>
   </v-container>
     

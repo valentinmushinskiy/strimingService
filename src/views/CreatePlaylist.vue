@@ -1,6 +1,6 @@
 <template>
   <v-card
-  height="88vh"
+  style="min-height:82vh"
   width="1000"
   class="mx-auto mt-5 px-8 pt-1">
     <h2 class="title mb-1">Створення нового плейлиста</h2>
@@ -48,7 +48,7 @@
 
         <v-card>
             <v-card-title>Оберіть треки</v-card-title>
-            <v-divider class="pb-4" ></v-divider>
+            <v-divider class="pb-4"></v-divider>
             <v-card-text style="height: 500px;">
                 <v-simple-table>
                     <tr v-for="track in tracks" :key="track.id" >
@@ -133,6 +133,9 @@ export default {
             console.log(playlist)
 
             this.$store.dispatch('uploadPlaylist', playlist)
+            .then(() => {
+                this.$store.dispatch('loadPlaylists')
+            })
 
             .catch(err => {
                 this.submitStatus = err.message

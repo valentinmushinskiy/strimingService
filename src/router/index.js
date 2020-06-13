@@ -33,17 +33,12 @@ const routes = [
     }
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: () => import('../views/Settings.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
-  },
-  {
     path: '/signin',
     name: 'SignIn',
     component: () => import('../views/SignIn.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next()
+    }
     
   },
   {

@@ -161,32 +161,14 @@ export default {
             email: this.email,
             password: this.password
           }
-          
-
-
 
           this.$store.dispatch('registerUser', user)
           .then(() => {
-            // let message = {
-            //   context: 'success',
-            //   title: 'You are register!'
-            // }
-            // this.$store.dispatch('getMessage', message)
-            // this.submitStatus = 'OK'
             this.$router.push('/')
           })
           .catch(err => {
             this.submitStatus = err.message
           })
-
-
-          // try{
-          //   this.$store.dispatch('registerUser', user)
-          //   this.submitStatus = 'OK'
-          //   this.$router.push('/')
-          // }catch(e){
-
-          // } 
           
         }  
       }

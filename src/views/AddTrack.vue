@@ -80,29 +80,8 @@ export default {
         required
       }
     },
-    // computed:{
-    //   artistName() {
-    //     return this.$store.getters.info.name 
-    //   }
-    // },
+
     methods: {
-      onPickFoto(){
-        this.$refs.imageInput.click()
-      },
-
-      onFotoPicked(event){
-          const files = event.target.files
-          let filename = files[0].name
-          this.fileName = filename
-          const fileReader = new FileReader()
-
-          fileReader.addEventListener('load', () => {
-            this.imageUrl = fileReader.result
-          })
-          fileReader.readAsDataURL(files[0])
-          this.file = files[0]
-      },
-
       onUploadTrack(){
         if(this.$v.$invalid){
           this.$v.$touch()
@@ -121,6 +100,9 @@ export default {
         }
 
         this.$store.dispatch('uploadTrack', track)
+        .then(() => {
+            this.$store.dispatch('loadTracks')
+        })
         this.$router.push('/library')
       },
       
@@ -138,7 +120,6 @@ export default {
         })
         fileReader.readAsDataURL(files[0])
         this.file = files[0]
-        this.$refs.fileSubmit.click()
       }
     },
 }
