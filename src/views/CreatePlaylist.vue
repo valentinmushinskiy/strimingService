@@ -43,8 +43,9 @@
         <v-dialog scrollable width="500px">
 
         <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">Оберіть треки</v-btn>
+            <v-btn color="#555" outlined dark v-on="on">Оберіть треки</v-btn>
         </template>
+        
 
         <v-card>
             <v-card-title>Оберіть треки</v-card-title>
@@ -64,7 +65,9 @@
                 </v-simple-table>
             </v-card-text>
         </v-card>
+        
         </v-dialog>
+        <v-btn class="ml-2" color="#555" outlined type="submit" @click="onUploadPlaylist">Створити</v-btn>
             <v-simple-table>
                 <tr v-for="track in tracksToPlaylist" :key="track.id">
                     <td>
@@ -77,7 +80,7 @@
             </v-simple-table>
         </div>
 
-        <button type="submit" @click="onUploadPlaylist">Загрузити</button>
+        
         
     </div>
     

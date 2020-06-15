@@ -11,7 +11,7 @@
     to="/create_playlist" 
     >Створити плейлист</v-btn>
    <div class="d-flex justify-start flex-wrap">
-     <v-card
+    <v-card
       max-width="226"
       class="mx-1 my-4"
       v-for="playlist in playlists" :key="playlist.id"
@@ -33,14 +33,16 @@
       <div class="d-flex">
         <v-btn v-show="isAdmin" 
         @click="deletePlaylist(playlist.id)"
-        class="subtitle-2"
+        class="subtitle-2 ml-3"
         >
-          Видалити
+          <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn v-show="isAdmin" 
         @click="editPlaylist(playlist.id)"
+        class="subtitle-2 ml-2"
         >
-          Редагувати
+          <v-icon>mdi-pencil-outline</v-icon>
+          
         </v-btn>
       </div>
       <v-card-actions>
@@ -50,11 +52,6 @@
           :to="`/playlist/${playlist.id}`"
         >
           <span>Детальніше</span>
-        </v-btn>
-        
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>

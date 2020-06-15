@@ -79,50 +79,8 @@ export default {
       currentTrackIndex: 0,
       transitionName: null,
       tracks: []
-      // tracks: [
-      //   {
-      //     name: "Mekanın Sahibi",
-      //     artist: "Norm Ender",
-      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/1.jpg",
-      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
-      //     url: "https://www.youtube.com/watch?v=z3wAjJXbYzA",
-      //     favorited: false
-      //   },
-      //   {
-      //     name: "Everybody Knows",
-      //     artist: "Leonard Cohen",
-      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/2.jpg",
-      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/2.mp3",
-      //     url: "https://www.youtube.com/watch?v=Lin-a2lTelg",
-      //     favorited: true
-      //   },
-      //   {
-      //     name: "Extreme Ways",
-      //     artist: "Moby",
-      //     cover: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/3.jpg",
-      //     source: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/3.mp3",
-      //     url: "https://www.youtube.com/watch?v=ICjyAe9S54c",
-      //     favorited: false
-      //   },
-
-      // ],
     };
   },
-
-  // computed:{
-  //   tracks(){
-  //     if(this.$store.getters.hasSong){
-  //       let tracks = this.$store.getters.playPlaylist
-  //       return tracks
-  //     }
-  //   },
-  //   trackId(){
-  //     if(this.$store.getters.hasSong){
-  //       let trackId = this.$store.getters.playTrack
-  //       return trackId
-  //     }
-  //   },
-  // },
 
   methods: {
     tracksToPlay(){
@@ -141,12 +99,16 @@ export default {
       }
     },
 
-    // current(){
-    //   console.log(tracks.find(track => track.id === trackId))
+    // searchedTrack(){
+    //   if(this.$store.getters.hasSong){
+
+    //     this.currentTrack = this.$store.getters.playSearchTrack
+    //     console.log(this.currentTrack)
+    //   }
     // },
 
     play() {
-      if (this.audio.paused) {
+      if (this.audio.paused){
         this.audio.play();
         this.isTimerPlaying = true;
       } else {
@@ -245,8 +207,13 @@ export default {
   created() {
     if(this.$store.getters.hasSong){
       let vm = this;
-      vm.tracksToPlay()
-      vm.trackId()
+      // if(this.$store.getters.hasResult){
+      //   vm.searchedTrack()
+      // }else{
+        vm.tracksToPlay()
+        vm.trackId()
+      // }
+      
       // this.currentTrack = tracks.find(track => track.id === trackId);
       this.audio = new Audio();
       this.audio.src = this.currentTrack.trackUrl;

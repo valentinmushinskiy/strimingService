@@ -6,7 +6,58 @@
     <h2 class="title mb-1">Моя медіатека</h2>
     <v-divider
     ></v-divider>
-    <v-simple-table>
+    <v-container>
+      <v-row>
+        <v-col cols="6">
+          <v-hover
+            v-slot:default="{ hover }"
+            open-delay="50"
+          >
+            <v-card
+            :elevation="hover ? 16 : 2"
+            to="/featured" 
+            >
+              <v-img
+                
+                class="white--text align-end"
+                height="200px"
+                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              >
+                <v-card-title>
+                  <v-icon color="red" class="mr-2">mdi-heart</v-icon>
+                  Вподобані
+                  </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-col>
+        <v-col cols="6">
+          <v-hover
+            v-slot:default="{ hover }"
+            open-delay="50"
+            >
+            <v-card 
+            :elevation="hover ? 16 : 2"
+              to="/uploaded" 
+              >
+              <v-img
+                class="white--text align-end"
+                height="200px"
+                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+              >
+                <v-card-title>
+                  <v-icon color="white" class="mr-2">mdi-upload</v-icon>
+                  Завантажені
+                  </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-col>
+        
+      </v-row>
+    </v-container>
+    
+    <!-- <v-simple-table>
       <template v-slot:default>
         <thead>
           <tr>
@@ -25,10 +76,7 @@
                 class="my-3"
                 @click='getTrackData'
                 >
-                  <v-icon size="22" 
-                  :data-trackArtist="track.artist"
-                  :data-trackName="track.trackName"
-                  :data-trackUrl="track.trackUrl">mdi-play</v-icon>
+                  <v-icon size="22">mdi-play</v-icon>
                 </v-btn>
             </td>
             <td width="20%">{{track.artist}}</td>
@@ -36,7 +84,7 @@
           </tr>
         </tbody>
       </template>
-    </v-simple-table>
+    </v-simple-table> -->
     
             <!-- <audio controls>
               <source :src="track.trackUrl" type="audio/mp3" >
@@ -58,6 +106,9 @@
 
 
 export default {
+  data: () => ({
+    featuredSrc: ''
+  }),
   async mounted() {
     if (!Object.keys(this.$store.getters.loadedTracks).length) {
         await this.$store.dispatch('loadTracks')
@@ -68,12 +119,6 @@ export default {
     getTrackData(e){
 
       let target = event.target
-
-      let playTrack = {
-        artist: target.getAttribute('data-trackArtist'),
-        name: target.getAttribute('data-trackName'),
-        url: target.getAttribute('data-trackUrl')
-      }
 
       this.$store.dispatch('sendTrackToPlayer', playTrack)
     }

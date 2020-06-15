@@ -1,7 +1,7 @@
 <template>
   <v-card 
   height="88vh"
-  width="1000"
+  width="600"
   class="mx-auto mt-5 px-8 py-5"
   >
 
@@ -31,15 +31,59 @@
     <v-form @submit.prevent="onUploadTrack">
     
 
-
-    <v-row class="align-center">
-      <v-col cols="4" md="4">
-        <v-btn color="blue-grey"
+        <div class="d-flex">
+          <v-btn color="blue-grey"
           outlined
           @click="onPickFile"
           >
             Виберіть файл
         </v-btn>
+        <v-dialog
+          v-model="dialog"
+          width="500"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="#555"
+              outlined
+              class="ml-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Додати
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-card-title
+              class="headline grey lighten-2"
+              primary-title
+            >
+              Політика конфіденціальності
+            </v-card-title>
+
+            <v-card-text>
+              Сервіс не несе відповідальності за завантажуючий на нього контент
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="primary"
+                text
+                type="submit"
+                 @click="dialog = false"
+              >
+                Погоджуюсь
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- <v-btn class="ml-2" color="#555" outlined type="submit">Додати</v-btn> -->
+        </div>
+        
       
         <input type="file"
               accept="audio/mp3"
@@ -47,14 +91,7 @@
               ref="fileInput"
               @change="onFilePicked"
         >
-
-      </v-col>
-
-      <v-col cols="8" md="8">
         <span class="mt-2 subtitle-2">{{fileName}}</span>
-      </v-col>
-      <button type="submit" ref="fileSubmit">Загрузити</button>
-      </v-row>
     </v-form>
   </v-card>
 </template>
@@ -65,6 +102,7 @@ import {required} from 'vuelidate/lib/validators'
 
 export default {
     data: () => ({
+      dialog: false,
       artist: '',
       trackName: '',
       fileName: '',
@@ -100,9 +138,9 @@ export default {
         }
 
         this.$store.dispatch('uploadTrack', track)
-        .then(() => {
-            this.$store.dispatch('loadTracks')
-        })
+        // .then(() => {
+        //     this.$store.dispatch('loadTracks')
+        // })
         this.$router.push('/library')
       },
       

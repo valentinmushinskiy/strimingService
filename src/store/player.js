@@ -1,7 +1,7 @@
 export default{
     state:{
         playlist: [],
-        trackId: null
+        trackId: null,
     },
 
     mutations:{
@@ -10,16 +10,16 @@ export default{
         },
         setPlaylist(state, payload){
             state.playlist = payload
-        }
+        },
     },
 
     actions:{
-        sendTrackToPlayer({commit}, playTrack){
+        sendPlaylistToPlayer({commit}, playTrack){
             commit('setPlaylist', playTrack.playlist)
             commit('setTrack', playTrack.track)
 
             console.log(playTrack.track)
-        }
+        },
     },
 
     getters:{
@@ -31,6 +31,6 @@ export default{
         },
         playTrack(state){
             return state.trackId
-        }
+        },
     }
 }

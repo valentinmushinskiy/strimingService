@@ -10,9 +10,26 @@
       class="mt-4"
       v-model="search"
       @input="log"
-      label="Введіть назву трека або імя користувача"
+      label="Введіть назву композиції"
       solo
     ></v-text-field>
+        <span v-for="result in results" :key="result.id">
+            <v-btn
+                fab
+                x-small
+                class="my-3 mr-5"
+                @click="play(results, result.id)"
+                
+            >
+                <v-icon size="22"
+                >mdi-play</v-icon>
+            </v-btn>
+            <span class="subtitle-2">{{result.artist}}</span>
+            -
+            <span>{{result.trackName}}</span>
+        </span>
+        
+        <v-divider></v-divider>
   </v-card>
 </template>
 
@@ -21,14 +38,31 @@
 export default {
   data(){
     return{
-      search: ''
+      search: '',
+      results: []
     }
   },
-
+  // computed:{
+  //   results(){
+  //       return this.$store.getters.loadedResults
+  //   }
+  // },
   methods:{
     log(){
-      console.log(this.search)
-    }
+      this.$store.dispatch('search', this.search)
+      this.results = this.$store.getters.loadedResults
+    },
+
+    play(tracks, trackId){
+        let playTrack = {
+            playlist: tracks,
+            track: trackId
+        }
+
+        console.log(playTrack.playlist)
+
+        this.$store.dispatch('sendPlaylistToPlayer', playTrack)
+    },
   }
 };
 

@@ -22,16 +22,25 @@
                         <v-btn
                             fab
                             x-small
-                            class="my-3 mr-5"
+                            class="my-3 mr-1"
                             @click="play(playlist.tracksToPlaylist, track.id)"
                             
                         >
                             <v-icon size="22"
                             >mdi-play</v-icon>
                         </v-btn>
+                        
+                        <v-btn 
+                        text 
+                        icon 
+                        class="mr-5" 
+                        @click="addToFeatures(track)">
+                            <v-icon dark>mdi-heart</v-icon>
+                        </v-btn>
                         <span class="subtitle-2">{{track.artist}}</span>
                         -
                         <span>{{track.trackName}}</span>
+                        
                     </span>
                     
                     <v-divider></v-divider>
@@ -51,6 +60,10 @@ export default {
         }
     },
     methods:{
+        addToFeatures(track){
+            console.log(track)
+            this.$store.dispatch('addToFeatures', track)
+        },
         play(tracks, trackId){
 
             let playTrack = {
@@ -60,7 +73,7 @@ export default {
 
             console.log(playTrack.playlist)
 
-            this.$store.dispatch('sendTrackToPlayer', playTrack)
+            this.$store.dispatch('sendPlaylistToPlayer', playTrack)
         }
     }
 }

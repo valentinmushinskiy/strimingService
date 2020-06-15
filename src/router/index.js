@@ -68,6 +68,22 @@ const routes = [
     }
   },
   {
+    path: '/featured',
+    name: 'Featured',
+    component: () => import('../views/Featured.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/signin')
+    }
+  },
+  {
+    path: '/uploaded',
+    name: 'Uploaded',
+    component: () => import('../views/Uploaded.vue'),
+    beforeEnter(to, from, next){
+      store.getters.checkUser ? next() : next('/signin')
+    }
+  },
+  {
     path: '/playlist/:id',
     name: 'Playlist',
     component: () => import('../views/Playlist.vue'),

@@ -28,10 +28,18 @@
                 </v-list-item>
             </v-list-item-group>
             </v-list>
+            
             <v-divider
             class="mx-4"
             ></v-divider>
 
+            
+
+            <v-btn 
+            text @click="logout" 
+            v-if="checkUser" 
+            class="mt-2 d-flex justify-start" color="red" width="100%">
+              <v-icon class="mr-2">mdi-logout</v-icon>Вихід</v-btn>
 
         </v-navigation-drawer>
         <v-app-bar
@@ -58,6 +66,7 @@
         
 
         <v-btn v-show="checkUser"
+        to="/library"
         text>
 
           <v-icon size="32" class="mr-1" dark>mdi-account-circle</v-icon>
@@ -65,12 +74,7 @@
           {{name}}
         
         </v-btn>
-        <v-divider
-            class="mx-5 white"
-            vertical
-            v-show="checkUser"
-          ></v-divider>
-        <v-btn outlined @click="logout" v-show="checkUser" class="mr-5">Вихід</v-btn>
+        
         </v-app-bar>
         <v-content>
           <router-view></router-view>
@@ -100,7 +104,7 @@
     data: () => ({
       drawers: ['Default (no property)', 'Permanent', 'Temporary'],
       primaryDrawer: {
-        model: null,
+        model: true,
         type: 'default (no property)',
         clipped: true,
         floating: false,
@@ -146,8 +150,8 @@
   
       items(){
         if(!this.checkUser){
-          return[
-            ]
+          this.primaryDrawer.model = false
+          return[]
         }
         else{
           return [
