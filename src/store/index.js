@@ -6,6 +6,9 @@ import common from './common'
 import user from './user'
 import info from './info'
 import player from './player'
+import tracks from './tracks'
+import playlists from './playlists'
+import search from './search'
 
 Vue.use(Vuex)
 
@@ -20,6 +23,9 @@ export default new Vuex.Store({
     common,
     user,
     info,
-    player
+    player,
+    tracks,
+    playlists,
+    search
   }
 })

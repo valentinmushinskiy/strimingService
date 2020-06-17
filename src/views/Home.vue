@@ -12,7 +12,7 @@
     >Створити плейлист</v-btn>
    <div class="d-flex justify-start flex-wrap">
     <v-card
-      max-width="226"
+      v-bind:class="{noPhone: !mobile, phone: mobile}"
       class="mx-1 my-4"
       v-for="playlist in playlists" :key="playlist.id"
     >
@@ -24,7 +24,6 @@
 
       <v-img
         :src="playlist.imageUrl"
-        height="200"
       ></v-img>
 
       <v-card-text>
@@ -63,6 +62,12 @@
 <script>
 
 export default {
+  data(){
+    return{
+      mobile: false
+    }
+  },
+
   async mounted() {
     if (!Object.keys(this.$store.getters.loadedPlaylists).length) {
         await this.$store.dispatch('loadPlaylists')
@@ -86,7 +91,29 @@ export default {
           this.$store.dispatch('loadPlaylists')
         })
     }
+  },
+
+  mounted(){
+    if(window.innerWidth < 600){
+      this.mobile = true 
+    }
   }
 
 }
 </script>
+
+<style scoped>
+.noPhone{
+  max-width: 226px
+}
+
+.phone{
+  width: 100%
+}
+
+.img{
+  height:200px
+}
+
+
+</style>

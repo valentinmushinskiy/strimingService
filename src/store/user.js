@@ -1,132 +1,18 @@
 import firebase from 'firebase/app'
 import User from './user_help'
 
-import 'firebase/storage';
-// import { url } from 'vuelidate/lib/validators';
-
 export default{
     state: {
-        loadedTracks: [],
-        loadedPlaylists: [],
         user: null,
-        createdTrackKey: '',
-        tracks: [],
-        playlist: [],
-        results: [],
-        loadFeatured: []
     },
+
     mutations:{
-        setFeaturedTracks(state, payload){
-            state.loadFeatured = payload
-        },
-        setLoadedTracks (state, payload) {
-            state.loadedTracks = payload
-        },
-        setLoadedPlaylists (state, payload) {
-            state.loadedPlaylists = payload
-        },
         setUser(state, payload){
             state.user = payload
-        },
-        createTrack(state, payload) {
-            state.tracks.push(payload)
-        },
-        createPlaylist(state, payload){
-            state.playlist.push(payload)
-        },
-        setCreatedTrackKey (state, payload) {
-            state.createdTrackKey = payload
-        },
-        clearTracks(state) {
-            state.loadedTracks = []
-        },
-        setSearch(state, payload){
-            state.results = payload
-        },
- 
+        }
     },
+
     actions:{
-        async addToFeatures({commit, state}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-                state.featured.find((track) => {
-                    console.log(track.id !== payload.id) 
-                })
-                const user = firebase.auth().currentUser
-                
-                await firebase.database().ref(`/users/${user.uid}/featured`).push(payload)
-                
-                commit('setLoading', false)
-                }catch (error) {
-                commit('setLoading', false)
-                commit('setError', error.message)
-                throw error
-            }
-        },
-        loadFeaturedTracks ({commit}) {
-            commit('setLoading', true)
-            const user = firebase.auth().currentUser
-            
-            firebase.database().ref(`/users/${user.uid}/featured`).once('value')
-              .then((data) => {
-                const featuredTracks = []
-                const obj = data.val()
-                for (let key in obj) {
-                featuredTracks.push({
-                    id: key,
-                    trackName: obj[key].trackName,
-                    trackUrl: obj[key].trackUrl,
-                    artist: obj[key].artist,
-                    userId: obj[key].userId
-                  })
-                }
-                
-                commit('setFeaturedTracks', featuredTracks)
-                commit('setLoading', false)
-              })
-              .catch(
-                (error) => {
-                  console.log(error)
-                  commit('setLoading', false)
-                }
-              )
-        },
-
-        search({commit}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-                firebase.database().ref(`tracks`).orderByChild(`trackName`)
-                .startAt(payload)
-                .limitToFirst(1)
-                .once('value')
-
-                .then((data) => {
-                    const search = []
-                    const obj = data.val()
-                    for (let key in obj) {
-                        search.push({
-                            id: key,
-                            trackName: obj[key].trackName,
-                            trackUrl: obj[key].trackUrl,
-                            artist: obj[key].artist,
-                            userId: obj[key].userId
-                        })
-                    }
-                    commit('setSearch', search)
-                    console.log(search)
-                })
-                
-                commit('setLoading', false)
-                }catch (error) {
-                commit('setLoading', false)
-                commit('setError', error.message)
-                throw error
-            }
-        },
-
-
         async registerUser ({commit}, {name, email, password}) {
             commit('clearError')
             commit('setLoading', true)
@@ -160,167 +46,6 @@ export default{
             }
         },
 
-        loadTracks ({commit}) {
-            commit('setLoading', true)
-            firebase.database().ref(`tracks`).once('value')
-              .then((data) => {
-                const tracks = []
-                const obj = data.val()
-                for (let key in obj) {
-                    if(obj[key].trackUrl){
-                        tracks.push({
-                            id: key,
-                            trackName: obj[key].trackName,
-                            trackUrl: obj[key].trackUrl,
-                            artist: obj[key].artist,
-                            userId: obj[key].userId
-                          })
-                    }
-                }
-                
-                commit('setLoadedTracks', tracks)
-                commit('setLoading', false)
-              })
-              .catch(
-                (error) => {
-                  console.log(error)
-                  commit('setLoading', false)
-                }
-              )
-        },
-
-        loadPlaylists({commit}){
-            commit('setLoading', true)
-
-            firebase.database().ref(`playlists`).once('value')
-            .then((data) => {
-                const playlists = []
-                const obj = data.val()
-                for(let key in obj){
-                    playlists.push({
-                        id: key,
-                        name: obj[key].name,
-                        description: obj[key].description,
-                        imageUrl: obj[key].imageUrl,
-                        tracksToPlaylist: obj[key].tracksToPlaylist
-                    })
-                }
-                commit('setLoadedPlaylists', playlists)
-                commit('setLoading', false)
-            })
-            .catch(
-                (error) => {
-                    console.log(error)
-                    commit('setLoading', false)
-                }
-            )
-        },
-
-        uploadTrack({commit}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-                const user = firebase.auth().currentUser
-                const track = {
-                    artist: payload.artist,
-                    trackName: payload.trackName,
-                    userId: user.uid
-                }
-
-                let trackUrl
-                let key
-                
-
-                firebase.database().ref(`tracks`).push(track)
-                    .then((data) => {
-                        key = data.key
-                        return key
-                    })
-                    .then(key => {
-                        const filename = payload.trackName
-                        return firebase.storage().ref(`tracks/${key}/${filename}.mp3`).put(payload.file)
-                    })
-                    .then(fileData => {
-                        let fullPath = fileData.metadata.fullPath
-                        return firebase.storage().ref(fullPath).getDownloadURL()
-                    })
-                    .then(URL => {
-                        trackUrl = URL
-                        return firebase.database().ref(`tracks`).child(key).update({trackUrl: trackUrl})
-                    })
-                    .then(() => {
-                        commit('createTrack', {
-                            ...track,
-                            trackUrl: trackUrl,
-                            id: key
-                        })
-                    })
-                .catch(error => {
-                    console.log(error);
-                })
-                
-                commit('setLoading', false)
-                }catch (error) {
-                commit('setLoading', false)
-                commit('setError', error.message)
-                throw error
-            }
-            
-        },
-
-        uploadPlaylist({commit}, {name, imageUrl, description, tracksToPlaylist}){
-            
-            const sendPlaylist = {
-                name: name,
-                description: description,
-                imageUrl: imageUrl,
-                tracksToPlaylist: tracksToPlaylist
-            }
-            commit('createPlaylist', sendPlaylist)
-
-            firebase.database().ref(`playlists`).push(sendPlaylist)
-        },
-
-        async deletePlaylist({commit}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-              await firebase.database().ref('playlists').child(payload).remove()
-              commit('setLoading', false)
-            } catch (error) {
-              commit('setLoading', false)
-              commit('setError', error.message)
-              throw error
-            }
-        },
-
-        async deleteTrackFromUploaded({commit}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-              await firebase.database().ref('tracks').child(payload).remove()
-              commit('setLoading', false)
-            } catch (error) {
-              commit('setLoading', false)
-              commit('setError', error.message)
-              throw error
-            }
-        },
-
-        async deleteTrackFromFeatured({commit}, payload){
-            commit('clearError')
-            commit('setLoading', true)
-            try {
-              const user = firebase.auth().currentUser
-              await firebase.database().ref(`/users/${user.uid}/featured`).child(payload).remove()
-              commit('setLoading', false)
-            } catch (error) {
-              commit('setLoading', false)
-              commit('setError', error.message)
-              throw error
-            }
-        },
-
         loggedUser({commit}, payload){
             commit('setUser', new User(payload.uid))
         },
@@ -336,38 +61,6 @@ export default{
     },
 
     getters:{
-        loadedResults(state){
-            return state.results
-        },
-
-        loadedPlaylists(state){
-            return state.loadedPlaylists
-        },
-
-        playlist(state){
-            return (id) => {
-                return state.loadedPlaylists.find((playlist) => {
-                    return playlist.id === id
-                })
-            }
-        },
-
-        featuredTracks(state){
-            return state.loadFeatured
-        },
-
-        loadedAllTracks (state) {
-            return state.loadedTracks
-        },
-
-        loadedTracks (state) {
-            const user = firebase.auth().currentUser
-
-            return state.loadedTracks.filter(loadedTrack => {
-                return loadedTrack.userId === user.uid
-            })
-        },
-
         user(state){
             return state.user
         },
@@ -375,8 +68,5 @@ export default{
         checkUser(state){
             return state.user !== null
         },
-        createdTrackKey (state) {
-            return state.createdTrackKey
-      }
     }
 }

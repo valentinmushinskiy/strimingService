@@ -67,7 +67,9 @@
 
         <v-btn v-show="checkUser"
         to="/library"
-        text>
+        text
+        v-bind:class="{'caption': mobile}"
+        >
 
           <v-icon size="32" class="mr-1" dark>mdi-account-circle</v-icon>
           
@@ -115,9 +117,15 @@
         inset: true,
       },
       item: 1,
+      mobile: false
     }),
     
-    
+    created(){
+      if(window.innerWidth < 600){
+        this.mobile = true 
+      }
+    },
+
     async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
         await this.$store.dispatch('fetchInfo')

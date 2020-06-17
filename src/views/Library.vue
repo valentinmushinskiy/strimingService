@@ -6,19 +6,21 @@
     <h2 class="title mb-1">Моя медіатека</h2>
     <v-divider
     ></v-divider>
-    <v-container>
-      <v-row>
-        <v-col cols="6">
+    <div class="d-flex justify-space-between flex-wrap mt-3" 
+      v-bind:class="{'flex-column': mobile}"
+    >
+
           <v-hover
             v-slot:default="{ hover }"
             open-delay="50"
           >
             <v-card
             :elevation="hover ? 16 : 2"
-            to="/featured" 
+            to="/featured"
+            v-bind:class="{noPhone: !mobile, phone: mobile}"
+
             >
               <v-img
-                
                 class="white--text align-end"
                 height="200px"
                 src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
@@ -30,15 +32,14 @@
               </v-img>
             </v-card>
           </v-hover>
-        </v-col>
-        <v-col cols="6">
           <v-hover
             v-slot:default="{ hover }"
             open-delay="50"
             >
             <v-card 
             :elevation="hover ? 16 : 2"
-              to="/uploaded" 
+              to="/uploaded"
+              v-bind:class="{noPhone: !mobile, phone: mobile, 'mt-3': mobile}"
               >
               <v-img
                 class="white--text align-end"
@@ -52,11 +53,8 @@
               </v-img>
             </v-card>
           </v-hover>
-        </v-col>
-        
-      </v-row>
-    </v-container>
-    
+
+    </div>
     <!-- <v-simple-table>
       <template v-slot:default>
         <thead>
@@ -106,10 +104,25 @@
 
 
 export default {
+  data(){
+    return{
+      mobile: false
+    }
+  },
+  mounted(){
+    if(window.innerWidth < 600){
+      this.mobile = true 
+    }
+  }
 };
 
 </script>
 
 <style scoped>
-
+  .noPhone{
+    width: 49%
+  }
+  .phone{
+    width: 100%
+  }
 </style>
