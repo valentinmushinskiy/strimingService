@@ -39,7 +39,7 @@
             text @click="logout" 
             v-if="checkUser" 
             class="mt-2 d-flex justify-start" color="red" width="100%">
-              <v-icon class="mr-2">mdi-logout</v-icon>Вихід</v-btn>
+              <v-icon class="mr-8">mdi-logout</v-icon>Вихід</v-btn>
 
         </v-navigation-drawer>
         <v-app-bar

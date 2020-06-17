@@ -59,32 +59,30 @@
               class="headline grey lighten-2"
               primary-title
             >
-              Політика конфіденціальності
+              Політика конфіденційності
             </v-card-title>
 
             <v-card-text>
-              Сервіс не несе відповідальності за завантажуючий на нього контент
+              Сервіс не несе відповідальності за завантажений на нього контент
             </v-card-text>
 
             <v-divider></v-divider>
 
-            <v-card-actions>
+            
               <v-spacer></v-spacer>
               <v-btn
                 color="primary"
                 text
-                type="submit"
-                 @click="dialog = false"
+                @click="agree = true"
               >
                 Погоджуюсь
               </v-btn>
-            </v-card-actions>
+            
           </v-card>
         </v-dialog>
-        <!-- <v-btn class="ml-2" color="#555" outlined type="submit">Додати</v-btn> -->
+        <v-btn class="ml-2" ref="submitTrack" color="#555" outlined type="submit">Додати</v-btn>
         </div>
         
-      
         <input type="file"
               accept="audio/mp3"
               style="display: none"
@@ -103,6 +101,7 @@ import {required} from 'vuelidate/lib/validators'
 export default {
     data: () => ({
       dialog: false,
+      agree: false,
       artist: '',
       trackName: '',
       fileName: '',
@@ -116,6 +115,14 @@ export default {
     validations: {
       trackName: {
         required
+      }
+    },
+
+    computed: {
+      watch(){
+        if(this.agree){
+          this.$refs.submitTrack.click()
+        }
       }
     },
 
@@ -146,6 +153,15 @@ export default {
       
       onPickFile(){
         this.$refs.fileInput.click()
+      },
+
+      onSubmit(){
+        this.agree = true
+        if(this.agree){
+
+          this.$refs.submitTrack.click()
+        }
+        
       },
 
       onFilePicked(event){

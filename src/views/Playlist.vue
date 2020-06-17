@@ -62,8 +62,10 @@ export default {
     methods:{
         addToFeatures(track){
             console.log(track)
+            
             this.$store.dispatch('addToFeatures', track)
         },
+
         play(tracks, trackId){
 
             let playTrack = {

@@ -32,5 +32,13 @@ export default{
         playTrack(state){
             return state.trackId
         },
+        playPlaylistObject(state){
+            let play = {
+                playlist: state.playlist,
+                trackId: state.trackId
+            }
+            console.log(play)
+            return play
+        },
     }
 }

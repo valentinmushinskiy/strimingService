@@ -106,28 +106,6 @@
 
 
 export default {
-  data: () => ({
-    featuredSrc: ''
-  }),
-  async mounted() {
-    if (!Object.keys(this.$store.getters.loadedTracks).length) {
-        await this.$store.dispatch('loadTracks')
-    }
-  },
-
-  methods:{
-    getTrackData(e){
-
-      let target = event.target
-
-      this.$store.dispatch('sendTrackToPlayer', playTrack)
-    }
-  },
-  computed: {
-    tracks () {
-      return this.$store.getters.loadedTracks
-    },
-  }
 };
 
 </script>

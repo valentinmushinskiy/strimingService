@@ -82,6 +82,32 @@ export default {
     };
   },
 
+  // computed: {
+  //   playPlaylist(){
+  //     this.$store.getters.playPlaylist
+  //     console.log(this.$store.getters.playPlaylist)
+  //   },
+  //   playTrackId(){
+  //     this.$store.getters.playTrack
+  //   }
+  // },
+
+  // watch: {
+  //   playPlaylist(newValue, oldValue){
+  //     if(newValue != oldValue){
+  //       this.tracks = newValue
+  //       console.log(newValue)
+  //     }
+  //   },
+  //   playTrack(newValue, oldValue){
+  //     if(newValue != oldValue){
+  //       let trackId = newValue
+  //       this.currentTrack = this.tracks.find(track => track.id === trackId)
+  //       console.log(this.currentTrack)
+  //     }
+  //   }
+  // },
+
   methods: {
     tracksToPlay(){
       if(this.$store.getters.hasSong){
@@ -144,8 +170,9 @@ export default {
     updateBar(x) {
       let progress = this.$refs.progress;
       let maxduration = this.audio.duration;
-      let position = x - 525 - progress.offsetLeft;
-      console.log(position)
+      console.log(x)
+      let position = x - window.innerWidth / 2 - progress.offsetLeft;
+      console.log(x - window.innerWidth / 1.5)
       let percentage = (100 * position) / progress.offsetWidth;
       if (percentage > 100) {
         percentage = 100;
@@ -160,6 +187,7 @@ export default {
     },
 
     clickProgress(e) {
+      
       this.isTimerPlaying = true;
       this.audio.pause();
       this.updateBar(e.pageX);
@@ -204,6 +232,20 @@ export default {
     }
   },
 
+  mounted(){
+    this.$store.watch(
+      (state, getters) => getters.playPlaylist,
+      (newValue, oldValue) => {
+        if(newValue != oldValue){
+          console.log(newValue)
+          this.tracks = newValue
+          this.nextTrack()
+          this.prevTrack()
+        }
+      }
+    )
+  },
+
   created() {
     if(this.$store.getters.hasSong){
       let vm = this;
@@ -212,6 +254,7 @@ export default {
       // }else{
         vm.tracksToPlay()
         vm.trackId()
+        
       // }
       
       // this.currentTrack = tracks.find(track => track.id === trackId);
@@ -227,14 +270,18 @@ export default {
         vm.nextTrack();
         this.isTimerPlaying = true;
       };
+      vm.play()
     }
   }
 }
 </script>
 
 <style>
+.player{
+  position: absolute;
+  right: 33%;
+}
 .progress__bar {
-
   height: 6px;
   width: 100%;
   cursor: pointer;

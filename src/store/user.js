@@ -12,9 +12,14 @@ export default{
         createdTrackKey: '',
         tracks: [],
         playlist: [],
-        results: []
+        results: [],
+        featured: [],
+        loadFeatured: []
     },
     mutations:{
+        setFeaturedTracks(state, payload){
+            state.featured.push(payload)
+        },
         setLoadedTracks (state, payload) {
             state.loadedTracks = payload
         },
@@ -38,15 +43,21 @@ export default{
         },
         setSearch(state, payload){
             state.results = payload
+        },
+        setFeaturedTracks(state, payload){
+            state.loadFeatured = payload
         }
     },
     actions:{
-        addToFeatures({commit}, payload){
+        async addToFeatures({commit}, payload){
             commit('clearError')
             commit('setLoading', true)
             try {
-                firebase.database().ref(`users`).orderByChild(`trackName`)
+                const user = firebase.auth().currentUser
+                console.log(user)
+                commit('setFeaturedTracks', payload)
                 
+                await firebase.database().ref(`/users/${user.uid}/featured`).push(payload)
                 
                 commit('setLoading', false)
                 }catch (error) {
@@ -55,6 +66,35 @@ export default{
                 throw error
             }
         },
+        loadFeaturedTracks ({commit}) {
+            commit('setLoading', true)
+            const user = firebase.auth().currentUser
+            
+            firebase.database().ref(`/users/${user.uid}/featured`).once('value')
+              .then((data) => {
+                const tracks = []
+                const obj = data.val()
+                for (let key in obj) {
+                  tracks.push({
+                    id: key,
+                    trackName: obj[key].trackName,
+                    trackUrl: obj[key].trackUrl,
+                    artist: obj[key].artist,
+                    userId: obj[key].userId
+                  })
+                }
+                
+                commit('setFeaturedTracks', tracks)
+                commit('setLoading', false)
+              })
+              .catch(
+                (error) => {
+                  console.log(error)
+                  commit('setLoading', false)
+                }
+              )
+        },
+
         search({commit}, payload){
             commit('clearError')
             commit('setLoading', true)
@@ -77,10 +117,6 @@ export default{
                         })
                     }
                     commit('setSearch', search)
-                    // let search = {}
-                    // const obj = data.val()
-                    // console.log(obj)
-                    // search = JSON.stringify(obj.artist)
                     console.log(search)
                 })
                 
@@ -142,6 +178,7 @@ export default{
                     userId: obj[key].userId
                   })
                 }
+                
                 commit('setLoadedTracks', tracks)
                 commit('setLoading', false)
               })
@@ -271,6 +308,7 @@ export default{
         },
         
     },
+
     getters:{
         loadedResults(state){
             return state.results
@@ -287,6 +325,12 @@ export default{
                 })
             }
         },
+
+        featuredTracks(state){
+            console.log(state.loadFeatured)
+            return state.loadFeatured
+        },
+
         loadedAllTracks (state) {
             return state.loadedTracks
         },

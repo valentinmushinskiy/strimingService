@@ -27,18 +27,15 @@
             <v-spacer></v-spacer>
             <span>
                 <v-btn
-                    text
-                    fab
+                    icon
                     x-small
-                    class="my-3 mr-3"
+                    class="my-5 mr-3"
                 >
                     <v-icon size="22"
                     >mdi-delete</v-icon>
                 </v-btn>
             </span>
-            
 
-            
         </span>
         <v-divider></v-divider>
     </div>
@@ -55,20 +52,18 @@ export default {
 
     methods:{
         play(tracks, trackId){
-
             let playTrack = {
                 playlist: tracks,
                 track: trackId
             }
 
             console.log(playTrack.playlist)
-
             this.$store.dispatch('sendPlaylistToPlayer', playTrack)
         },
     },
     computed: {
         tracks () {
-        return this.$store.getters.loadedTracks
+            return this.$store.getters.loadedTracks
         },
     }
 

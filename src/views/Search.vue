@@ -42,11 +42,6 @@ export default {
       results: []
     }
   },
-  // computed:{
-  //   results(){
-  //       return this.$store.getters.loadedResults
-  //   }
-  // },
   methods:{
     log(){
       this.$store.dispatch('search', this.search)
