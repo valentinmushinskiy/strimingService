@@ -48,17 +48,7 @@
           </div>
           
         </div>
-          <!-- <v-slider
-          ref="progress"
-          @change="clickProgress"
-          color="blue-grey lighten-4"
-          track-color="blue-grey lighten-2"
-          :label="currentTime"
-          min="0"
-          max="100"
-          step="1"
-          :value="barWidth"
-          ></v-slider> -->
+
       </v-card>
       
       </div>
@@ -82,32 +72,6 @@ export default {
     };
   },
 
-  // computed: {
-  //   playPlaylist(){
-  //     this.$store.getters.playPlaylist
-  //     console.log(this.$store.getters.playPlaylist)
-  //   },
-  //   playTrackId(){
-  //     this.$store.getters.playTrack
-  //   }
-  // },
-
-  // watch: {
-  //   playPlaylist(newValue, oldValue){
-  //     if(newValue != oldValue){
-  //       this.tracks = newValue
-  //       console.log(newValue)
-  //     }
-  //   },
-  //   playTrack(newValue, oldValue){
-  //     if(newValue != oldValue){
-  //       let trackId = newValue
-  //       this.currentTrack = this.tracks.find(track => track.id === trackId)
-  //       console.log(this.currentTrack)
-  //     }
-  //   }
-  // },
-
   methods: {
     tracksToPlay(){
       if(this.$store.getters.hasSong){
@@ -124,14 +88,6 @@ export default {
         console.log(this.currentTrack)
       }
     },
-
-    // searchedTrack(){
-    //   if(this.$store.getters.hasSong){
-
-    //     this.currentTrack = this.$store.getters.playSearchTrack
-    //     console.log(this.currentTrack)
-    //   }
-    // },
 
     play() {
       if (this.audio.paused){
@@ -170,9 +126,7 @@ export default {
     updateBar(x) {
       let progress = this.$refs.progress;
       let maxduration = this.audio.duration;
-      console.log(x)
-      let position = x - window.innerWidth / 2 - progress.offsetLeft;
-      console.log(x - window.innerWidth / 1.5)
+      let position = x - progress.getBoundingClientRect().left;
       let percentage = (100 * position) / progress.offsetWidth;
       if (percentage > 100) {
         percentage = 100;
@@ -233,6 +187,7 @@ export default {
   },
 
   mounted(){
+    
     this.$store.watch(
       (state, getters) => getters.playPlaylist,
       (newValue, oldValue) => {
@@ -271,15 +226,16 @@ export default {
         this.isTimerPlaying = true;
       };
       vm.play()
+    }else{
+      vm.paused()
     }
   }
 }
 </script>
 
 <style>
-.player{
-  position: absolute;
-  right: 33%;
+.progress{
+  position: relative;
 }
 .progress__bar {
   height: 6px;

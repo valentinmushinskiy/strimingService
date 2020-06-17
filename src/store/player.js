@@ -11,6 +11,11 @@ export default{
         setPlaylist(state, payload){
             state.playlist = payload
         },
+        setClaearPlayer(state){
+            console.log('empty')
+            state.trackId = null
+            state.playlist = []
+        }
     },
 
     actions:{

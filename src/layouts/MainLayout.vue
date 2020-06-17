@@ -49,7 +49,7 @@
         dark
         >
         <v-app-bar-nav-icon
-            v-if="primaryDrawer.type !== 'permanent'"
+            v-if="primaryDrawer.type !== 'default'"
             @click.stop="primaryDrawer.model = !primaryDrawer.model"
         />
         <v-toolbar-title class="mr-8" color="">YOUX</v-toolbar-title>
@@ -105,7 +105,7 @@
       drawers: ['Default (no property)', 'Permanent', 'Temporary'],
       primaryDrawer: {
         model: true,
-        type: 'default (no property)',
+        type: 'Default (no property)',
         clipped: true,
         floating: false,
         mini: false,
@@ -150,7 +150,6 @@
   
       items(){
         if(!this.checkUser){
-          this.primaryDrawer.model = false
           return[]
         }
         else{

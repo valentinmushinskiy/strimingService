@@ -85,7 +85,6 @@ export default {
         .then(() => {
           this.$store.dispatch('loadPlaylists')
         })
-
     }
   }
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
+import firebase from 'firebase'
 
 import Home from '../views/Home.vue'
 
@@ -11,34 +12,26 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    meta: {auth: true},
     component: Home,
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
+
   },
   {
     path: '/search',
     name: 'Search',
+    meta: {auth: true},
     component: () => import('../views/Search.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
   },
   {
     path: '/library',
     name: 'Library',
+    meta: {auth: true},
     component: () => import('../views/Library.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
   },
   {
     path: '/signin',
     name: 'SignIn',
     component: () => import('../views/SignIn.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next()
-    }
     
   },
   {
@@ -54,51 +47,55 @@ const routes = [
   {
     path: '/add_track',
     name: 'AddTrack',
+    meta: {auth: true},
     component: () => import('../views/AddTrack.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
+
   },
   {
     path: '/create_playlist',
     name: 'CreatePlaylist',
+    meta: {auth: true},
     component: () => import('../views/CreatePlaylist.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
   },
   {
     path: '/featured',
     name: 'Featured',
+    meta: {auth: true},
     component: () => import('../views/Featured.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
   },
   {
     path: '/uploaded',
     name: 'Uploaded',
+    meta: {auth: true},
     component: () => import('../views/Uploaded.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
+
   },
   {
     path: '/playlist/:id',
     name: 'Playlist',
+    meta: {auth: true},
     component: () => import('../views/Playlist.vue'),
-    beforeEnter(to, from, next){
-      store.getters.checkUser ? next() : next('/signin')
-    }
   }
-
-
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser
+  const requireAuth = to.matched.some(Library => Library.meta.auth)
+
+  if(requireAuth && !currentUser){
+    next('/signin')
+  }else if (to.path == '/login' && currentUser) {
+    next('/')
+  }else{
+    next()
+  }
+
 })
 
 export default router

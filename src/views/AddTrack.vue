@@ -33,55 +33,22 @@
 
         <div class="d-flex">
           <v-btn color="blue-grey"
-          outlined
-          @click="onPickFile"
-          >
-            Виберіть файл
-        </v-btn>
-        <v-dialog
-          v-model="dialog"
-          width="500"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="#555"
-              outlined
-              class="ml-2"
-              v-bind="attrs"
-              v-on="on"
+            outlined
+            @click="onPickFile"
             >
-              Додати
-            </v-btn>
-          </template>
-
-          <v-card>
-            <v-card-title
-              class="headline grey lighten-2"
-              primary-title
-            >
-              Політика конфіденційності
-            </v-card-title>
-
-            <v-card-text>
-              Сервіс не несе відповідальності за завантажений на нього контент
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                text
-                @click="agree = true"
-              >
-                Погоджуюсь
-              </v-btn>
-            
-          </v-card>
-        </v-dialog>
-        <v-btn class="ml-2" ref="submitTrack" color="#555" outlined type="submit">Додати</v-btn>
+              Виберіть файл
+          </v-btn>
+        
         </div>
+        
+        <div class="mb-4 d-flex align-center">
+          <v-checkbox
+          v-model="checkbox"
+          id="check"
+        ></v-checkbox>
+        <label for="check">Сервіс не несе відповідальності за контент який ви завантажуєте.</label>
+        </div>
+        <v-btn v-if="checkbox" class="ml-2" ref="submitTrack" color="#555" outlined type="submit">Додати</v-btn>
         
         <input type="file"
               accept="audio/mp3"
@@ -100,6 +67,7 @@ import {required} from 'vuelidate/lib/validators'
 
 export default {
     data: () => ({
+      checkbox: false,
       dialog: false,
       agree: false,
       artist: '',

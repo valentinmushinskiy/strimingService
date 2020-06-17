@@ -30,6 +30,7 @@
                     icon
                     x-small
                     class="my-5 mr-3"
+                    @click="deleteTrack(track.id)"
                 >
                     <v-icon size="22"
                     >mdi-delete</v-icon>
@@ -60,6 +61,13 @@ export default {
             console.log(playTrack.playlist)
             this.$store.dispatch('sendPlaylistToPlayer', playTrack)
         },
+
+        deleteTrack(trackId){
+            this.$store.dispatch('deleteTrackFromUploaded', trackId)
+                .then(() => {
+                    this.$store.dispatch('loadTracks')
+                })
+        }
     },
     computed: {
         tracks () {

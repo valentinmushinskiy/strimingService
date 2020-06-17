@@ -13,12 +13,11 @@ export default{
         tracks: [],
         playlist: [],
         results: [],
-        featured: [],
         loadFeatured: []
     },
     mutations:{
         setFeaturedTracks(state, payload){
-            state.featured.push(payload)
+            state.loadFeatured = payload
         },
         setLoadedTracks (state, payload) {
             state.loadedTracks = payload
@@ -44,18 +43,17 @@ export default{
         setSearch(state, payload){
             state.results = payload
         },
-        setFeaturedTracks(state, payload){
-            state.loadFeatured = payload
-        }
+ 
     },
     actions:{
-        async addToFeatures({commit}, payload){
+        async addToFeatures({commit, state}, payload){
             commit('clearError')
             commit('setLoading', true)
             try {
+                state.featured.find((track) => {
+                    console.log(track.id !== payload.id) 
+                })
                 const user = firebase.auth().currentUser
-                console.log(user)
-                commit('setFeaturedTracks', payload)
                 
                 await firebase.database().ref(`/users/${user.uid}/featured`).push(payload)
                 
@@ -72,10 +70,10 @@ export default{
             
             firebase.database().ref(`/users/${user.uid}/featured`).once('value')
               .then((data) => {
-                const tracks = []
+                const featuredTracks = []
                 const obj = data.val()
                 for (let key in obj) {
-                  tracks.push({
+                featuredTracks.push({
                     id: key,
                     trackName: obj[key].trackName,
                     trackUrl: obj[key].trackUrl,
@@ -84,7 +82,7 @@ export default{
                   })
                 }
                 
-                commit('setFeaturedTracks', tracks)
+                commit('setFeaturedTracks', featuredTracks)
                 commit('setLoading', false)
               })
               .catch(
@@ -164,19 +162,20 @@ export default{
 
         loadTracks ({commit}) {
             commit('setLoading', true)
-            const user = firebase.auth().currentUser
             firebase.database().ref(`tracks`).once('value')
               .then((data) => {
                 const tracks = []
                 const obj = data.val()
                 for (let key in obj) {
-                  tracks.push({
-                    id: key,
-                    trackName: obj[key].trackName,
-                    trackUrl: obj[key].trackUrl,
-                    artist: obj[key].artist,
-                    userId: obj[key].userId
-                  })
+                    if(obj[key].trackUrl){
+                        tracks.push({
+                            id: key,
+                            trackName: obj[key].trackName,
+                            trackUrl: obj[key].trackUrl,
+                            artist: obj[key].artist,
+                            userId: obj[key].userId
+                          })
+                    }
                 }
                 
                 commit('setLoadedTracks', tracks)
@@ -189,7 +188,6 @@ export default{
                 }
               )
         },
-
 
         loadPlaylists({commit}){
             commit('setLoading', true)
@@ -296,6 +294,33 @@ export default{
             }
         },
 
+        async deleteTrackFromUploaded({commit}, payload){
+            commit('clearError')
+            commit('setLoading', true)
+            try {
+              await firebase.database().ref('tracks').child(payload).remove()
+              commit('setLoading', false)
+            } catch (error) {
+              commit('setLoading', false)
+              commit('setError', error.message)
+              throw error
+            }
+        },
+
+        async deleteTrackFromFeatured({commit}, payload){
+            commit('clearError')
+            commit('setLoading', true)
+            try {
+              const user = firebase.auth().currentUser
+              await firebase.database().ref(`/users/${user.uid}/featured`).child(payload).remove()
+              commit('setLoading', false)
+            } catch (error) {
+              commit('setLoading', false)
+              commit('setError', error.message)
+              throw error
+            }
+        },
+
         loggedUser({commit}, payload){
             commit('setUser', new User(payload.uid))
         },
@@ -305,6 +330,7 @@ export default{
             commit('setUser', null)
             commit('clearInfo')
             commit('clearTracks')
+            commit('setClaearPlayer')
         },
         
     },
@@ -327,7 +353,6 @@ export default{
         },
 
         featuredTracks(state){
-            console.log(state.loadFeatured)
             return state.loadFeatured
         },
 
