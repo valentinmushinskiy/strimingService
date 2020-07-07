@@ -4,8 +4,7 @@
   width="1000"
   class="mx-auto mt-5 px-8 pt-1">
     <h2 class="title mb-1">Створення нового плейлиста</h2>
-    <v-divider
-    ></v-divider>
+    <v-divider></v-divider>
    <v-text-field
    v-model="name"
    placeholder="Назва плейлиста"

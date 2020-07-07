@@ -31,9 +31,6 @@ export default {
             commit('clearError')
             commit('setLoading', true)
             try {
-                state.featured.find((track) => {
-                    console.log(track.id !== payload.id) 
-                })
                 const user = firebase.auth().currentUser
                 
                 await firebase.database().ref(`/users/${user.uid}/featured`).push(payload)

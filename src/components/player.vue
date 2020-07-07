@@ -3,7 +3,7 @@
       dark
     >
       <div class="d-flex align-center">
-      <div class="mr-7">
+      <div class="mr-7" v-if="!mobile">
           <v-btn icon small>
           <v-icon size="24" @click="prevTrack" color="blue-grey lighten-4">mdi-skip-previous-circle</v-icon>
           </v-btn>
@@ -30,6 +30,24 @@
       >
 
       <span class="d-flex justify-space-between">
+        <span v-if="mobile">
+          <div class="mr-1" >
+            <v-btn icon x-small>
+            <v-icon size="20" @click="prevTrack" color="blue-grey lighten-4">mdi-skip-previous-circle</v-icon>
+            </v-btn>
+            <v-btn icon 
+            @click="play"
+            >
+              <v-icon size="24" color="blue-grey lighten-4">
+                {{ isTimerPlaying ? 'mdi-pause-circle' : 'mdi-play-circle' }}
+              </v-icon>
+            </v-btn>
+
+            <v-btn icon x-small>
+              <v-icon size="20" @click="nextTrack" color="blue-grey lighten-4">mdi-skip-next-circle</v-icon>
+            </v-btn>
+          </div>
+        </span>
         <span class="d-flex justify-center subtitle-1" style="color: #fff">
 
         <span class="subtitle-2" >{{currentTrack.trackName}}</span>
@@ -59,6 +77,7 @@
 export default {
   data() {
     return {
+      mobile: false,
       audio: null,
       circleLeft: null,
       barWidth: null,
@@ -180,7 +199,7 @@ export default {
         if(this.isTimerPlaying) {
           this.audio.play();
         } else {
-          this.audio.pause();
+          this.audio.play();
         }
       }, 300);
     }
@@ -199,6 +218,9 @@ export default {
         }
       }
     )
+    if(window.innerWidth < 600){
+      this.mobile = true 
+    }
   },
 
   created() {

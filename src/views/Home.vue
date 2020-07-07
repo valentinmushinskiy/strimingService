@@ -11,48 +11,35 @@
     to="/create_playlist" 
     >Створити плейлист</v-btn>
    <div class="d-flex justify-start flex-wrap">
-    <v-card
+     <v-card
       v-bind:class="{noPhone: !mobile, phone: mobile}"
       class="mx-1 my-4"
       v-for="playlist in playlists" :key="playlist.id"
+      :to="`/playlist/${playlist.id}`"
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="headline">{{playlist.name}}</v-list-item-title>
+          <v-list-item-title class="headline d-flex justify-space-between">
+            <span>{{playlist.name}}</span>
+            <v-btn 
+              v-show="isAdmin" 
+              @click="deletePlaylist(playlist.id)"
+              icon
+              >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+        </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
       <v-img
         :src="playlist.imageUrl"
+        v-bind:class="{img: !mobile, '.mobile-img': mobile}"
       ></v-img>
 
       <v-card-text>
         {{playlist.description}}
       </v-card-text>
-      <div class="d-flex">
-        <v-btn v-show="isAdmin" 
-        @click="deletePlaylist(playlist.id)"
-        class="subtitle-2 ml-3"
-        >
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-        <v-btn v-show="isAdmin" 
-        @click="editPlaylist(playlist.id)"
-        class="subtitle-2 ml-2"
-        >
-          <v-icon>mdi-pencil-outline</v-icon>
-          
-        </v-btn>
-      </div>
-      <v-card-actions>
-        <v-btn
-          text
-          color="deep-purple accent-4"
-          :to="`/playlist/${playlist.id}`"
-        >
-          <span>Детальніше</span>
-        </v-btn>
-      </v-card-actions>
     </v-card>
    </div>
    
@@ -63,12 +50,11 @@
 
 export default {
   data(){
-    return{
-      mobile: false
-    }
-  },
-
-  async mounted() {
+      return{
+        mobile: false
+      }
+    },  
+    async mounted() {
     if (!Object.keys(this.$store.getters.loadedPlaylists).length) {
         await this.$store.dispatch('loadPlaylists')
     }
@@ -90,10 +76,11 @@ export default {
         .then(() => {
           this.$store.dispatch('loadPlaylists')
         })
+
     }
   },
 
-  mounted(){
+  created(){
     if(window.innerWidth < 600){
       this.mobile = true 
     }
@@ -101,7 +88,6 @@ export default {
 
 }
 </script>
-
 <style scoped>
 .noPhone{
   max-width: 226px
@@ -113,6 +99,10 @@ export default {
 
 .img{
   height:200px
+}
+
+.mobile-img{
+  height: auto;
 }
 
 

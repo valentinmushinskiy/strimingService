@@ -4,7 +4,14 @@
     width="1000"
     class="mx-auto mt-5 px-8 py-5"
   >
-    <h2 class="title mb-1">Завантажені</h2>
+    <div class="d-flex justify-space-between">
+        <h2 class="title mb-1">Завантажені</h2>
+
+        <v-btn to="/add_track" 
+        class="mr-1" icon>
+            <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
+    </div>
     <v-divider></v-divider>
     <div v-for="track in tracks" :key="track.id">
         <span class="d-flex justify-space-between">

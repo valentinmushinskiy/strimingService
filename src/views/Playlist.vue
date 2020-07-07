@@ -86,4 +86,7 @@ export default {
     .img{
         width: 25%
     }
+    .mobile-img{
+        width: 100%
+    }
 </style>

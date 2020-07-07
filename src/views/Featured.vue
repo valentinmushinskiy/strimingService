@@ -46,7 +46,7 @@
 <script>
 export default {
   async mounted() {
-    if (!Object.keys(this.$store.getters.loadedTracks).length) {
+    if (!Object.keys(this.$store.getters.featuredTracks).length) {
         await this.$store.dispatch('loadFeaturedTracks')
     }
   },
