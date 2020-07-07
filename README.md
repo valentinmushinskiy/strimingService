@@ -1,4 +1,4 @@
-# youxdiplom
+# Striming service based on Vue.js 
 
 ## Project setup
 ```
